@@ -1,130 +1,144 @@
 #include "shell.h"
 
 /**
- * alias_list - creates a new alias list
+ * alias_list - builtin func to set alias list
  *
- * Return: Pointer to the new alias list or NULL on failure
+ * Return: 0 on success
  */
 alias_t *alias_list(void)
 {
-    return NULL;
+	alias_t *head;
+
+	head = NULL;
+
+	return (head);
 }
 
 /**
- * add_node_alias - adds a new alias node to the list
- * @head: Pointer to the head of the alias list
- * @alias: The alias to add
- * @command: The command equivalent to the alias
+ * add_node_alias - builtin func to set alias
+ * @head: head of alias list
+ * @alias: alias ot add
+ * @command: actual command equivalent to alias
  *
- * Return: Pointer to the new node or NULL on failure
+ * Return: 0 on success
  */
+
 alias_t *add_node_alias(alias_t **head, char *alias, char *command)
 {
-    alias_t *new_node = malloc(sizeof(alias_t));
-    if (new_node == NULL)
-        return NULL;
+	alias_t *new_node, *temp;
 
-    new_node->alias = _strdup(alias);
-    new_node->command = _strdup(command);
-    new_node->next = NULL;
+	new_node = malloc(sizeof(alias_t));
+	if (new_node == NULL)
+		return (NULL);
 
-    if (!*head)
-        *head = new_node;
-    else
-    {
-        alias_t *temp = *head;
-        while (temp->next)
-            temp = temp->next;
+	new_node->alias = _strdup(alias);
+	new_node->command = _strdup(command);
+	new_node->next = NULL;
 
-        temp->next = new_node;
-    }
+	if (!*head)
+		*head = new_node;
+	else
+	{
+		temp = *head;
 
-    return new_node;
+		while (temp->next)
+			temp = temp->next;
+
+		temp->next = new_node;
+	}
+
+	return (new_node);
 }
 
 /**
- * modify_node_alias - modifies an existing node in the alias list
- * @head: Pointer to the head of the alias list
- * @new_var: The alias to modify
- * @new_val: The new command equivalent to the alias
+ * modify_node_alias - checks to see if node exists, and modifies it if so.
+ * @head: beginning of linked list
+ * @new_var: variable to modify
+ * @new_val: new string to be modified to found node
  *
- * Return: EXT_SUCCESS on success, EXT_FAILURE on failure
+ * Return: pointer to new node or NULL if fail
  */
 int modify_node_alias(alias_t **head, char *new_var, char *new_val)
 {
-    alias_t *temp = *head;
+	alias_t *temp;
 
-    while (temp)
-    {
-        if (_strcmp(temp->alias, new_var) == 0)
-        {
-            free(temp->command);
-            temp->command = _strdup(new_val);
-            return EXT_SUCCESS;
-        }
-        temp = temp->next;
-    }
+	temp = *head;
 
-    return EXT_FAILURE;
+	while (temp)
+	{
+		if (_strcmp(temp->alias, new_var) == 0)
+		{
+			free(temp->command);
+			temp->command = _strdup(new_val);
+
+			return (EXT_SUCCESS);
+		}
+		temp = temp->next;
+	}
+
+	return (EXT_FAILURE);
 }
 
+
 /**
- * remove_node_alias - removes a node from the alias list
- * @head: Pointer to the head of the alias list
- * @var: The alias of the node to be removed
+ * remove_node_alias - removes node from linked list
+ * @head: beginning of linked list
+ * @var: var of node to be removed from linked list
  *
- * Return: EXT_SUCCESS on success, EXT_FAILURE on failure
+ * Return: pointer to new node or NULL
  */
 int remove_node_alias(alias_t **head, char *var)
 {
-    if (head == NULL)
-        return EXT_FAILURE;
+	alias_t *copy_head = *head, *temp = *head;
 
-    alias_t *copy_head = NULL, *temp = *head;
+	if (head == NULL)
+		return (EXT_FAILURE);
+	copy_head = NULL;
+	while (temp)
+	{
+		if (_strcmp(temp->alias, var) == 0)
+		{
+			if (copy_head)
+				copy_head->next = temp->next;
+			else
+				*head = temp->next;
 
-    while (temp)
-    {
-        if (_strcmp(temp->alias, var) == 0)
-        {
-            if (copy_head)
-                copy_head->next = temp->next;
-            else
-                *head = temp->next;
+			free(temp->alias);
+			free(temp->command);
+			free(temp);
 
-            free(temp->alias);
-            free(temp->command);
-            free(temp);
+			return (EXT_SUCCESS);
+		}
+		copy_head = temp;
+		temp = temp->next;
+	}
 
-            return EXT_SUCCESS;
-        }
-        copy_head = temp;
-        temp = temp->next;
-    }
-
-    return EXT_FAILURE;
+	return (EXT_FAILURE);
 }
 
+
 /**
- * write_alias - writes the alias list to stdout
- * @head: Pointer to the head of the alias list
+ * write_alias - function to write alias list to stdout for testing
+ * @head: head of alias list
  *
- * Return: The number of characters written
+ * Return: chars written
  */
 int write_alias(alias_t *head)
 {
-    int i = 0;
-    alias_t *temp = head;
+	int i = 0;
+	alias_t *temp = head;
 
-    while (temp)
-    {
-        write(STDOUT_FILENO, temp->alias, _strlen(temp->alias));
-        write(STDOUT_FILENO, "=\"", 2);
-        write(STDOUT_FILENO, temp->command, _strlen(temp->command));
-        write(STDOUT_FILENO, "\"\n", 2);
+	while (temp)
+	{
+		write(STDOUT_FILENO, temp->alias, _strlen(temp->alias));
+	    write(STDOUT_FILENO, "=\"", 2);
+		write(STDOUT_FILENO, temp->command, _strlen(temp->command));
+	    write(STDOUT_FILENO, "\"\n", 2);
 
-        temp = temp->next;
-        i++;
-    }
+		temp = temp->next;
+		i++;
 
-    return i;
+	}
+
+	return (i);
 }
