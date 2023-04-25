@@ -37,7 +37,6 @@
 #define TOKEN_OR         8
 
 /* -----environ----- */
-extern char **environ;
 
 /* ---------------main--------------- */
 ssize_t _getline(char **buffer, size_t *limit);
