@@ -75,33 +75,29 @@ int _setenv(arg_inventory_t *arginv)
 	return (EXT_SUCCESS);
 }
 
-/**
- * _unsetenv - unsets environmental variable
- * @arginv: arguments inventory
- *
- * Return: 0 on success
- */
+ /**
+  * _unsetenv - unsets environmental variable
+  * @arginv: arguments inventory
+  * Return: 0 on success
+  */
 int _unsetenv(arg_inventory_t *arginv)
 {
-	char **commands;
+	char **commands = (char **)arginv->commands;
 	env_t *envlist = arginv->envlist;
-
-	commands = (char **)arginv->commands;
 
 	if (commands[1] == NULL)
 	{
 		_perror("unsetenv: missing parameters.\n");
-		return (-1);
+		return (EXT_FAILURE);
 	}
-
 	if (commands[2] != NULL)
 	{
 		_perror("unsetenv: too many input commands.\n");
-		return (-1);
-	}
-
-	if (remove_node_env(&envlist, commands[1]))
 		return (EXT_FAILURE);
-
+	}
+	if (remove_node_env(&envlist, commands[1]) != 0)
+	{
+		return (EXT_FAILURE);
+	}
 	return (EXT_SUCCESS);
 }
