@@ -71,7 +71,11 @@ env_t *add_node_env(env_t **head, char *var, char *val);
 int modify_node_env(env_t **head, char *new_var, char *new_val);
 int remove_node_env(env_t **head, char *var);
 
+<<<<<<< HEAD
 /* ---------------linklist--------------- */
+=======
+/* ---------------linkdlist--------------- */
+>>>>>>> 191d8a48eb7557cc131c8def41b21ae2ca4c9630
 int _env(arg_inventory_t *arginv);
 int _setenv(arg_inventory_t *arginv);
 int _history(arg_inventory_t *arginv);

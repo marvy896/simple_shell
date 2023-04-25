@@ -7,18 +7,16 @@
  *
  * Return: pointer to copy
  */
-char *_strcpy(char *dest, const char *src)
+char *_strcpy(char *dest, char *src)
 {
-    int i = 0;
+	int c;
 
-    while (src[i] != '\0')
-    {
-        dest[i] = src[i];
-        i++;
-    }
-    dest[i] = '\0';
+	for (c = 0; src[c] != '\0'; c++)
+		dest[c] = src[c];
 
-    return (dest);
+	dest[c] = '\0';
+
+	return (dest);
 }
 
 /**
@@ -29,20 +27,20 @@ char *_strcpy(char *dest, const char *src)
  *
  * Return: destination string concatenated
  */
-char *_strncpy(char *dest, const char *src, size_t n)
+char *_strncpy(char *dest, char *src, int n)
 {
-    size_t i;
+	int j;
 
-    for (i = 0; i < n && src[i] != '\0'; i++)
-        dest[i] = src[i];
+	for (j = 0; j < n && src[j] != '\0'; j++)
+		dest[j] = src[j];
 
-    while (i < n)
-    {
-        dest[i] = '\0';
-        i++;
-    }
+	while (j < n)
+	{
+		dest[j] = '\0';
+		j++;
+	}
 
-    return (dest);
+	return (dest);
 }
 
 /**
@@ -52,15 +50,15 @@ char *_strncpy(char *dest, const char *src, size_t n)
  *
  * Return: pointer to destination
  */
-char *_strcat(char *dest, const char *src)
+char *_strcat(char *dest, char *src)
 {
-    size_t dest_len = _strlen(dest);
-    size_t i;
+	while (*dest)
+		dest++;
 
-    for (i = 0; src[i] != '\0'; i++)
-        dest[dest_len + i] = src[i];
+	while (*src)
+		*(dest++) = *(src++);
 
-    dest[dest_len + i] = '\0';
+	*dest = '\0';
 
-    return (dest);
+	return (dest);
 }
