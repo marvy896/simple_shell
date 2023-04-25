@@ -1,7 +1,7 @@
 #ifndef SIMPLE_SHELL
 #define SIMPLE_SHELL
 
-/* we included the standard library headers */
+/* included standard library headers */
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -15,8 +15,8 @@
 #include <stdarg.h>
 #include <signal.h>
 
-/* we included custom headers */
-#include "stuctfile.h"
+/* included custom headers */
+#include "structs.h"
 
 /* -----MACROS----- */
 #define BUFSIZE 1024
@@ -25,7 +25,7 @@
 #define TRUE (1 == 1)
 #define FALSE (!TRUE)
 
-/* this defines the macros for skeno struct */
+/* this defines the macros for token_t struct */
 #define TOKEN_STRING     0
 #define TOKEN_SEMICOLON  1
 #define TOKEN_PIPE       2
@@ -36,7 +36,7 @@
 #define TOKEN_AND        7
 #define TOKEN_OR         8
 
-/* -----shell1----- */
+/* -----environ----- */
 extern char **environ;
 
 /* ---------------main--------------- */
@@ -44,16 +44,16 @@ ssize_t _getline(char **buffer, size_t *limit);
 int _filemode(int fd);
 ssize_t _readline(int fd, char **buffer, size_t *limit);
 
-/* --------- inventory file ---------- */
+/* --------- arguments inventory ---------- */
 arg_inventory_t *buildarginv(void);
 char *set_name(env_t *envlist, char *name);
 
-/* ---------------log--------------- */
+/* ---------------execute--------------- */
 pid_t execute(arg_inventory_t *arginv);
 int exec_builtins(arg_inventory_t *arginv);
 pid_t exec_path(char *command, arg_inventory_t *arginv);
 
-/* ---------------token--------------- */
+/* ---------------tokenizer--------------- */
 int delete_tokens(tokens_t *tokens);
 void tokenize(tokens_t *tokens, const char *string);
 int is_redirection(int token_id);
@@ -62,7 +62,7 @@ void delete_dups(tokens_t *tokens);
 void token_classify(tokens_t *tokens);
 void cleanup_tokens(tokens_t *tokens, unsigned int tokens_idx, char *data);
 
-/* -------custom ------- */
+/* -------custom environ------- */
 env_t *env_list(void);
 char **separate_string(char *string);
 unsigned int link_count(env_t *head);
@@ -71,11 +71,7 @@ env_t *add_node_env(env_t **head, char *var, char *val);
 int modify_node_env(env_t **head, char *new_var, char *new_val);
 int remove_node_env(env_t **head, char *var);
 
-<<<<<<< HEAD
-/* ---------------linklist--------------- */
-=======
-/* ---------------linkdlist--------------- */
->>>>>>> 191d8a48eb7557cc131c8def41b21ae2ca4c9630
+/* ---------------builtin--------------- */
 int _env(arg_inventory_t *arginv);
 int _setenv(arg_inventory_t *arginv);
 int _history(arg_inventory_t *arginv);
@@ -87,7 +83,7 @@ int load_alias(arg_inventory_t *arginv);
 int save_alias(arg_inventory_t *arginv);
 int shell_exit(arg_inventory_t *arginv);
 
-/* ---------------samps--------------- */
+/* ---------------strings--------------- */
 char *_strncpy(char *dest, char *src, int n);
 char *_strdup(char *str);
 unsigned int _strlen(const char *str);
@@ -114,14 +110,14 @@ char *mem_reset(char *str, int bytes);
 void *safe_malloc(int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
-/* ---------------historylist--------------- */
+/* ---------------history--------------- */
 history_t *history_list(arg_inventory_t *arginv);
 history_t *add_node_history(history_t **head, char *command);
 int file_history(arg_inventory_t *arginv);
 char *history_to_string(history_t *head);
 history_t *init_history(history_t *head, char *buffer);
 
-/* -----memset----- */
+/* -----alias----- */
 int write_alias(alias_t *head);
 alias_t *alias_list(void);
 alias_t *add_node_alias(alias_t **head, char *alias, char *command);
@@ -129,23 +125,23 @@ int modify_node_alias(alias_t **head, char *new_var, char *new_val);
 int remove_node_alias(alias_t **head, char *var);
 alias_t *fetch_node_alias(alias_t *head, char *var);
 
-/* ---------------en--------------- */
+/* ---------------cd--------------- */
 char *file_path(char **commands, env_t *envlist);
 env_t *fetch_node(env_t *head, char *var);
 
-/* ---------------printfile--------------- */
+/* ---------------printer--------------- */
 int write_uint(unsigned int n);
 unsigned int write_history(history_t *head);
 void _puts(char *str);
 size_t print_list(env_t *head);
 int _putchar(char c);
 
-/* ---------------fileinputoutput--------------- */
+/* ---------------file I/O--------------- */
 ssize_t read_textfile(char *filename, size_t letters);
 int trunc_text_to_file(char *filename, char *text_content);
 int append_text_to_file(char *filename, char *text_content);
 
-/* ---------------linkfile--------------- */
+/* ---------------link_path--------------- */
 int locate_path(char *path, env_t *envlist);
 int cat_path(char **search_path, char *cmd);
 int is_path(char *command);
@@ -153,13 +149,13 @@ int count_paths(char *path_str);
 char **tokenize_path(char *path_str);
 void free_paths(char **paths);
 
-/* ---------------parsetreefuncs--------------- */
+/* ---------------parsetree--------------- */
 ptree_t *ptree_new_node(ptree_t *parent);
 ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens,
 							   unsigned int *cur_token);
 int delete_ptree(ptree_t *node);
 
-/* ---------------parsefunc--------------- */
+/* ---------------parser--------------- */
 int parse_error(token_t *near);
 ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs,
 					int min_prec);
@@ -168,7 +164,7 @@ int delete_parser(parser_t *parser);
 void expand_bash_vars(arg_inventory_t *arginv);
 int expand_alias(arg_inventory_t *arginv);
 
-/* ---------------processorfiles--------------- */
+/* ---------------processor--------------- */
 unsigned int init_pipeline_count_processes(ptree_t *tree);
 int init_pipeline_push_processes(pipeline_t *pipeline, ptree_t *tree);
 int init_pipeline(pipeline_t *pipeline, ptree_t *ptree);
@@ -176,13 +172,13 @@ int process_execute_core(arg_inventory_t *arginv);
 int process_execute(arg_inventory_t *arginv);
 int delete_pipeline(pipeline_t *pipeline);
 
-/* ---------------freelog--------------- */
+/* ---------------free--------------- */
 int freeall(arg_inventory_t *arginv);
 int free_environ(env_t *head);
 int free_history(history_t *head);
 int free_alias(alias_t *head);
 
-/* ----helpfiler---- */
+/* ----help---- */
 void help_exit(void);
 void help_env(void);
 void help_setenv(void);
@@ -193,3 +189,4 @@ void help_alias(void);
 void help_help(void);
 
 #endif
+
