@@ -39,7 +39,7 @@
 /* -----environ----- */
 extern char **environ;
 
-/* ---------------main--------------- */
+/* ---------------main functions--------------- */
 ssize_t _getline(char **buffer, size_t *limit);
 int _filemode(int fd);
 ssize_t _readline(int fd, char **buffer, size_t *limit);
@@ -48,12 +48,12 @@ ssize_t _readline(int fd, char **buffer, size_t *limit);
 arg_inventory_t *buildarginv(void);
 char *set_name(env_t *envlist, char *name);
 
-/* ---------------execute--------------- */
+/* ---------------execute functions in log file--------------- */
 pid_t execute(arg_inventory_t *arginv);
 int exec_builtins(arg_inventory_t *arginv);
 pid_t exec_path(char *command, arg_inventory_t *arginv);
 
-/* ---------------tokenizer--------------- */
+/* ---------------tokenizer functions in Token files--------------- */
 int delete_tokens(tokens_t *tokens);
 void tokenize(tokens_t *tokens, const char *string);
 int is_redirection(int token_id);
@@ -62,7 +62,7 @@ void delete_dups(tokens_t *tokens);
 void token_classify(tokens_t *tokens);
 void cleanup_tokens(tokens_t *tokens, unsigned int tokens_idx, char *data);
 
-/* -------custom environ------- */
+/* -------custom environ functions in shell files------- */
 env_t *env_list(void);
 char **separate_string(char *string);
 unsigned int link_count(env_t *head);
@@ -71,7 +71,7 @@ env_t *add_node_env(env_t **head, char *var, char *val);
 int modify_node_env(env_t **head, char *new_var, char *new_val);
 int remove_node_env(env_t **head, char *var);
 
-/* ---------------builtin--------------- */
+/* ---------------builtin Functions in LinklistFiles--------------- */
 int _env(arg_inventory_t *arginv);
 int _setenv(arg_inventory_t *arginv);
 int _history(arg_inventory_t *arginv);
@@ -83,7 +83,7 @@ int load_alias(arg_inventory_t *arginv);
 int save_alias(arg_inventory_t *arginv);
 int shell_exit(arg_inventory_t *arginv);
 
-/* ---------------strings--------------- */
+/* ---------------strings Functions in sampFuncs Files--------------- */
 char *_strncpy(char *dest, char *src, int n);
 char *_strdup(char *str);
 unsigned int _strlen(const char *str);
@@ -110,14 +110,14 @@ char *mem_reset(char *str, int bytes);
 void *safe_malloc(int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
-/* ---------------history--------------- */
+/* ---------------history Functions in helperfiles--------------- */
 history_t *history_list(arg_inventory_t *arginv);
 history_t *add_node_history(history_t **head, char *command);
 int file_history(arg_inventory_t *arginv);
 char *history_to_string(history_t *head);
 history_t *init_history(history_t *head, char *buffer);
 
-/* -----alias----- */
+/* -----alias Functions in memofile----- */
 int write_alias(alias_t *head);
 alias_t *alias_list(void);
 alias_t *add_node_alias(alias_t **head, char *alias, char *command);
@@ -125,23 +125,23 @@ int modify_node_alias(alias_t **head, char *new_var, char *new_val);
 int remove_node_alias(alias_t **head, char *var);
 alias_t *fetch_node_alias(alias_t *head, char *var);
 
-/* ---------------cd--------------- */
+/* ---------------cd Functions--------------- */
 char *file_path(char **commands, env_t *envlist);
 env_t *fetch_node(env_t *head, char *var);
 
-/* ---------------printer--------------- */
+/* ---------------printer Functions--------------- */
 int write_uint(unsigned int n);
 unsigned int write_history(history_t *head);
 void _puts(char *str);
 size_t print_list(env_t *head);
 int _putchar(char c);
 
-/* ---------------file I/O--------------- */
+/* ---------------file I/O Functions--------------- */
 ssize_t read_textfile(char *filename, size_t letters);
 int trunc_text_to_file(char *filename, char *text_content);
 int append_text_to_file(char *filename, char *text_content);
 
-/* ---------------link_path--------------- */
+/* ---------------link_path Functions--------------- */
 int locate_path(char *path, env_t *envlist);
 int cat_path(char **search_path, char *cmd);
 int is_path(char *command);
@@ -149,13 +149,13 @@ int count_paths(char *path_str);
 char **tokenize_path(char *path_str);
 void free_paths(char **paths);
 
-/* ---------------parsetree--------------- */
+/* ---------------parsetree Functions--------------- */
 ptree_t *ptree_new_node(ptree_t *parent);
 ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens,
 							   unsigned int *cur_token);
 int delete_ptree(ptree_t *node);
 
-/* ---------------parser--------------- */
+/* ---------------parser Functions--------------- */
 int parse_error(token_t *near);
 ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs,
 					int min_prec);
@@ -164,7 +164,7 @@ int delete_parser(parser_t *parser);
 void expand_bash_vars(arg_inventory_t *arginv);
 int expand_alias(arg_inventory_t *arginv);
 
-/* ---------------processor--------------- */
+/* ---------------processor Functions--------------- */
 unsigned int init_pipeline_count_processes(ptree_t *tree);
 int init_pipeline_push_processes(pipeline_t *pipeline, ptree_t *tree);
 int init_pipeline(pipeline_t *pipeline, ptree_t *ptree);
@@ -172,13 +172,13 @@ int process_execute_core(arg_inventory_t *arginv);
 int process_execute(arg_inventory_t *arginv);
 int delete_pipeline(pipeline_t *pipeline);
 
-/* ---------------free--------------- */
+/* ---------------free Functions--------------- */
 int freeall(arg_inventory_t *arginv);
 int free_environ(env_t *head);
 int free_history(history_t *head);
 int free_alias(alias_t *head);
 
-/* ----help---- */
+/* ----helpFile functions---- */
 void help_exit(void);
 void help_env(void);
 void help_setenv(void);

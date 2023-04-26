@@ -75,9 +75,10 @@ int _setenv(arg_inventory_t *arginv)
 	return (EXT_SUCCESS);
 }
 
- /**
-  * _unsetenv - unsets environmental variable
+/**
+  * _unsetenv - unsets environmental variable in the function
   * @arginv: arguments inventory
+  *
   * Return: 0 on success
   */
 int _unsetenv(arg_inventory_t *arginv)

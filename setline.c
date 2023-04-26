@@ -56,7 +56,6 @@ ssize_t _readline(int fd, char **buffer, size_t *limit)
 
 	return ((ssize_t)charcount);
 }
-
 /**
  * _filemode - finds file mode of standard input
  * @fd: STDIN_FILENO
