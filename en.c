@@ -9,19 +9,14 @@
  */
 char *file_path(char **commands, env_t *envlist)
 {
-	env_t *fetched_home, *fetched_old;
-	int hyphen;
-	char *path;
+	env_t *fetched_home = fetch_node(envlist, "HOME");
+	env_t *fetched_old = fetch_node(envlist, "OLDPWD");
+	int hyphen = commands[1] ? _strncmp(commands[1], "-", 1) : 1;
+	char *path = safe_malloc(PATH_MAX);
 
-	path = safe_malloc(1024);
-
-	fetched_home = fetch_node(envlist, "HOME");
-	fetched_old = fetch_node(envlist, "OLDPWD");
-
-	if (commands[1] != NULL)
-		hyphen = _strncmp(commands[1], "-", 1);
-
-	if (commands[1] == NULL)
+	if (!path)
+		return (NULL);
+	if (!commands[1])
 		path = _strcpy(path, fetched_home->val);
 	else if (hyphen == 0)
 		path = _strcpy(path, fetched_old->val);
@@ -29,11 +24,14 @@ char *file_path(char **commands, env_t *envlist)
 		path = _strcpy(path, commands[1]);
 	else
 	{
-		getcwd(path, 1024);
+		if (!getcwd(path, PATH_MAX))
+		{
+			free(path);
+			return (NULL);
+		}
 		_strncat(path, "/", 1);
 		_strncat(path, commands[1], _strlen(commands[1]));
 	}
-
 	return (path);
 }
 

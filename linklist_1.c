@@ -76,11 +76,19 @@ int _setenv(arg_inventory_t *arginv)
 }
 
 /**
+<<<<<<< HEAD
  * _unsetenv - sets new environmental variable
  * @arginv: arguments inventory
  *
  * Return: 0 on success
  */
+=======
+  * _unsetenv - unsets environmental variable in the function
+  * @arginv: arguments inventory
+  *
+  * Return: 0 on success
+  */
+>>>>>>> 7210612a2055427b639ef1318389e9e334a42c80
 int _unsetenv(arg_inventory_t *arginv)
 {
 	char **commands;

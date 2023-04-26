@@ -25,31 +25,26 @@ alias_t *alias_list(void)
 
 alias_t *add_node_alias(alias_t **head, char *alias, char *command)
 {
-	alias_t *new_node, *temp;
+	alias_t *new_node = safe_malloc(sizeof(alias_t));
 
-	new_node = malloc(sizeof(alias_t));
 	if (new_node == NULL)
 		return (NULL);
-
 	new_node->alias = _strdup(alias);
 	new_node->command = _strdup(command);
 	new_node->next = NULL;
 
-	if (!*head)
+	if (*head == NULL)
 		*head = new_node;
 	else
 	{
-		temp = *head;
+		alias_t *temp = *head;
 
 		while (temp->next)
 			temp = temp->next;
-
 		temp->next = new_node;
 	}
-
 	return (new_node);
 }
-
 /**
  * modify_node_alias - checks to see if node exists, and modifies it if so.
  * @head: beginning of linked list
